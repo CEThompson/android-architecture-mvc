@@ -1,6 +1,5 @@
-package com.example.mvc.networking.questions;
+package com.example.mvc.networking;
 
-import com.example.mvc.networking.users.UserSchema;
 import com.google.gson.annotations.SerializedName;
 
 public class QuestionSchema {

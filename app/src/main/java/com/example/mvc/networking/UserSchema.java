@@ -1,4 +1,4 @@
-package com.example.mvc.networking.users;
+package com.example.mvc.networking;
 
 import com.google.gson.annotations.SerializedName;
 
