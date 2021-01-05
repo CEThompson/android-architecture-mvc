@@ -22,6 +22,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// NOTE: This class represents the Application Layer
 public class QuestionsListActivity extends BaseActivity implements QuestionsListViewMvcImpl.Listener {
 
     private StackoverflowApi mStackoverflowApi;

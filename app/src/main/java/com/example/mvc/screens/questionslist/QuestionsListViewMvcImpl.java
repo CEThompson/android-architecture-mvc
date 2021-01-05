@@ -12,6 +12,7 @@ import com.example.mvc.questions.Question;
 import java.util.ArrayList;
 import java.util.List;
 
+// NOTE: This class represents the UI Layer
 public class QuestionsListViewMvcImpl implements QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
     private ListView mLstQuestions;
