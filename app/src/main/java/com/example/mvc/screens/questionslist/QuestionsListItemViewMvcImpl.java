@@ -1,6 +1,6 @@
 package com.example.mvc.screens.questionslist;
 
-import android.text.Layout;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +12,24 @@ import com.example.mvc.questions.Question;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionsListItemViewMvcImpl implements QuestionsListItemViewMvc {
+public class QuestionsListItemViewMvcImpl
+        implements QuestionsListItemViewMvc {
 
     private final View mRootView;
     private final TextView mTxtTitle;
+
     private final List<Listener> mListeners = new ArrayList<>(1);
     private Question mQuestion;
 
-    public QuestionsListItemViewMvcImpl(LayoutInflater inflater, ViewGroup parent){
+    public QuestionsListItemViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         mRootView = inflater.inflate(R.layout.layout_question_list_item, parent, false);
         mTxtTitle = findViewById(R.id.txt_title);
-        getRootView().setOnClickListener(new View.OnClickListener(){
+        getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (Listener listener: mListeners)
+                for (Listener listener : mListeners) {
                     listener.onQuestionClicked(mQuestion);
+                }
             }
         });
     }
