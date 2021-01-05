@@ -32,11 +32,8 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewMvc = new QuestionsListViewMvcImpl(LayoutInflater.from(this), null);
-        mStackoverflowApi = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(StackoverflowApi.class);
+
+        mStackoverflowApi = getCompositionRoot().getStackOverflowApi();
         setContentView(mViewMvc.getRootView());
     }
 
