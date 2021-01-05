@@ -1,9 +1,7 @@
 package com.example.mvc.screens.questionslist;
 
-import android.view.View;
-
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.ViewMvc;
+import com.example.mvc.screens.common.ObservableViewMvc;
 
 import java.util.List;
 
@@ -12,15 +10,11 @@ import java.util.List;
 
 // This interface documents the functionality of the MVC view
 // Interfaces for MVC views are a very good investment into long term maintainability
-public interface QuestionsListViewMvc extends ViewMvc {
+public interface QuestionsListViewMvc extends ObservableViewMvc<QuestionsListViewMvc.Listener> {
 
     public interface Listener {
         void onQuestionClicked(Question question);
     }
-
-    void registerListener(Listener listener);
-
-    void unregisterListener(Listener listener);
 
     void bindQuestions(List<Question> questions);
 }
