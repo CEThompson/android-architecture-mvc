@@ -3,14 +3,14 @@ package com.example.mvc.screens.questionslist;
 import android.view.View;
 
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.ViewMvc;
 
-public interface QuestionsListItemViewMvc {
+public interface QuestionsListItemViewMvc extends ViewMvc {
 
     public interface Listener {
         void onQuestionClicked(Question question);
     }
 
-    View getRootView();
     void registerListener(Listener listener);
     void unregisterListener(Listener listener);
 
