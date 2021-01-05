@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
 
-public class QuestionsListAdapter extends ArrayAdapter<Question> {
+public class QuestionsListAdapter extends ArrayAdapter<Question> implements QuestionsListItemViewMvc.Listener {
 
     private final OnQuestionClickListener mOnQuestionClickListener;
 
@@ -26,39 +26,28 @@ public class QuestionsListAdapter extends ArrayAdapter<Question> {
         mOnQuestionClickListener = onQuestionClickListener;
     }
 
-    private static class ViewHolder {
-        private TextView mTxtTitle;
-    }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.layout_question_list_item, parent, false);
-            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.mTxtTitle = convertView.findViewById(R.id.txt_title);
-            convertView.setTag(viewHolder);
+            QuestionsListItemViewMvc viewMvc = new QuestionsListItemViewMvcImpl(
+                    LayoutInflater.from(getContext()), parent);
+            viewMvc.registerListener(this);
+            convertView = viewMvc.getRootView();
+            convertView.setTag(viewMvc);
         }
 
         final Question question = getItem(position);
 
         // bind the data to views
-        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-        viewHolder.mTxtTitle.setText(question.getTitle());
-
-        // set listener
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onQuestionClicked(question);
-            }
-        });
+        QuestionsListItemViewMvc viewMvc = (QuestionsListItemViewMvc) convertView.getTag();
+        viewMvc.bindQuestion(question);
 
         return convertView;
     }
 
-    private void onQuestionClicked(Question question) {
+    @Override
+    public void onQuestionClicked(Question question) {
         mOnQuestionClickListener.onQuestionClicked(question);
     }
 }
