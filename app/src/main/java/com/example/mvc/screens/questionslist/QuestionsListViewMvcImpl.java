@@ -11,20 +11,20 @@ import android.widget.ListView;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.BaseObservableViewMvc;
 import com.example.mvc.screens.common.BaseViewMvc;
+import com.example.mvc.screens.common.ObservableViewMvc;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // NOTE: This class represents the UI Layer
 public class QuestionsListViewMvcImpl
-        extends BaseViewMvc
+        extends BaseObservableViewMvc<QuestionsListViewMvc.Listener>
         implements QuestionsRecyclerAdapter.Listener, QuestionsListViewMvc {
 
     private RecyclerView mRecyclerQuestions;
     private QuestionsRecyclerAdapter mAdapter;
-
-    private final List<Listener> mListeners = new ArrayList<>(1);
 
     public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
         setRootView(inflater.inflate(R.layout.layout_questions_list, parent, false));
@@ -36,18 +36,8 @@ public class QuestionsListViewMvcImpl
     }
 
     @Override
-    public void registerListener(Listener listener) {
-        mListeners.add(listener);
-    }
-
-    @Override
-    public void unregisterListener(Listener listener) {
-        mListeners.remove(listener);
-    }
-
-    @Override
     public void onQuestionClicked(Question question) {
-        for (Listener listener : mListeners) {
+        for (Listener listener : getListeners()) {
             listener.onQuestionClicked(question);
         }
     }

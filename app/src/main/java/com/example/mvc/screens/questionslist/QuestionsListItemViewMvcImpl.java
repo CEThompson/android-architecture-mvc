@@ -8,18 +8,14 @@ import android.widget.TextView;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.BaseViewMvc;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.mvc.screens.common.BaseObservableViewMvc;
 
 public class QuestionsListItemViewMvcImpl
-        extends BaseViewMvc
+        extends BaseObservableViewMvc<QuestionsListItemViewMvc.Listener>
         implements QuestionsListItemViewMvc {
 
     private final TextView mTxtTitle;
 
-    private final List<Listener> mListeners = new ArrayList<>(1);
     private Question mQuestion;
 
     public QuestionsListItemViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent) {
@@ -28,21 +24,11 @@ public class QuestionsListItemViewMvcImpl
         getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (Listener listener : mListeners) {
+                for (Listener listener : getListeners()) {
                     listener.onQuestionClicked(mQuestion);
                 }
             }
         });
-    }
-
-    @Override
-    public void registerListener(Listener listener) {
-        mListeners.add(listener);
-    }
-
-    @Override
-    public void unregisterListener(Listener listener) {
-        mListeners.remove(listener);
     }
 
     @Override
