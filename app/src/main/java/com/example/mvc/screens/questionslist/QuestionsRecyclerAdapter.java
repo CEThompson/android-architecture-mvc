@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.ViewMvcFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +33,13 @@ public class QuestionsRecyclerAdapter
         }
     }
 
-    private final LayoutInflater mInflater;
     private final Listener mListener;
+    private ViewMvcFactory mViewMvcFactory;
     private List<Question> mQuestions = new ArrayList<>();
 
-    public QuestionsRecyclerAdapter(LayoutInflater inflater, Listener listener){
-        mInflater = inflater;
+    public QuestionsRecyclerAdapter(Listener listener, ViewMvcFactory viewMvcFactory){
         mListener = listener;
+        mViewMvcFactory = viewMvcFactory;
     }
 
     public void bindQuestions(List<Question> questions) {
@@ -49,7 +50,7 @@ public class QuestionsRecyclerAdapter
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        QuestionsListItemViewMvc viewMvc = new QuestionsListItemViewMvcImpl(mInflater, parent);
+        QuestionsListItemViewMvc viewMvc = mViewMvcFactory.getQuestionsListItemViewMvc(parent);
         viewMvc.registerListener(this);
         return new ViewHolder(viewMvc);
     }
