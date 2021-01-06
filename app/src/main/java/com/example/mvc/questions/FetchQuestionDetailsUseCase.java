@@ -9,6 +9,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// Note: This use case represents a single user flow
+// It is orchestrated by the controller (activity) when appropriate
 public class FetchQuestionDetailsUseCase extends BaseObservable<FetchQuestionDetailsUseCase.Listener> {
 
     private final StackoverflowApi mStackoverflowApi;

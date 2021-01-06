@@ -7,21 +7,15 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.example.mvc.R;
-import com.example.mvc.networking.QuestionDetailsResponseSchema;
-import com.example.mvc.networking.QuestionSchema;
-import com.example.mvc.networking.StackoverflowApi;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.BaseActivity;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-
+// NOTE: This activity represents a controller
+// It orchestrates usecases when appropriate
 public class QuestionDetailsActivity extends BaseActivity
-    implements FetchQuestionDetailsUseCase.Listener
-{
+        implements FetchQuestionDetailsUseCase.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
@@ -66,7 +60,7 @@ public class QuestionDetailsActivity extends BaseActivity
         bindQuestionDetails(questionDetails);
     }
 
-    private void bindQuestionDetails(QuestionDetails details){
+    private void bindQuestionDetails(QuestionDetails details) {
         mViewMvc.hideProgressIndication();
         mViewMvc.bindQuestion(details);
     }
