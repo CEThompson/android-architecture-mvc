@@ -14,7 +14,7 @@ public class CustomApplication extends Application {
         mCompositionRoot = new CompositionRoot();
     }
 
-    public CompositionRoot getmCompositionRoot() {
+    public CompositionRoot getCompositionRoot() {
         return mCompositionRoot;
     }
 }
