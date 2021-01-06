@@ -9,6 +9,7 @@ import com.example.mvc.common.Constants;
 import com.example.mvc.networking.QuestionSchema;
 import com.example.mvc.networking.QuestionsListResponseSchema;
 import com.example.mvc.networking.StackoverflowApi;
+import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.Question;
 import com.example.mvc.screens.common.BaseActivity;
 import com.example.mvc.screens.questiondetails.QuestionDetailsActivity;
@@ -21,52 +22,36 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 // NOTE: This class represents the Application Layer
-public class QuestionsListActivity extends BaseActivity implements QuestionsListViewMvcImpl.Listener {
+public class QuestionsListActivity extends BaseActivity
+        implements QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener {
 
-    private StackoverflowApi mStackoverflowApi;
+    private FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase;
     private QuestionsListViewMvc mViewMvc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(null);
-        mStackoverflowApi = getCompositionRoot().getStackOverflowApi();
+        mFetchLastActiveQuestionsUseCase = getCompositionRoot().getFetchLastActiveQuestionsUseCase();
         setContentView(mViewMvc.getRootView());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        fetchQuestions();
+        mFetchLastActiveQuestionsUseCase.registerListener(this);
         mViewMvc.registerListener(this);
+        mViewMvc.showProgressIndication();
+        mFetchLastActiveQuestionsUseCase.fetchLastActiveQuestions();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mViewMvc.unregisterListener(this);
+        mFetchLastActiveQuestionsUseCase.unregisterListener(this);
     }
 
-    private void fetchQuestions() {
-        mStackoverflowApi.fetchLastActiveQuestions(Constants.QUESTIONS_LIST_PAGE_SIZE)
-                .enqueue(new Callback<QuestionsListResponseSchema>() {
-                    @Override
-                    public void onResponse(Call<QuestionsListResponseSchema> call, Response<QuestionsListResponseSchema> response) {
-                        if (response.isSuccessful()) {
-                            bindQuestions(response.body().getQuestions());
-                        } else {
-                            Log.d("QuestionsListActivity", "onResponse failed " + response.message());
-                            networkCallFailed();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<QuestionsListResponseSchema> call, Throwable t) {
-                        Log.d("QuestionsListActivity", "onFailure " + t.getLocalizedMessage());
-                        networkCallFailed();
-                    }
-                });
-    }
 
     private void bindQuestions(List<QuestionSchema> questionSchemas) {
         List<Question> questions = new ArrayList<>(questionSchemas.size());
@@ -76,12 +61,20 @@ public class QuestionsListActivity extends BaseActivity implements QuestionsList
         mViewMvc.bindQuestions(questions);
     }
 
-    private void networkCallFailed() {
+    @Override
+    public void onQuestionClicked(Question question) {
+        QuestionDetailsActivity.start(this, question.getId());
+    }
+
+    @Override
+    public void onFetchLastActiveQuestionsFailed() {
+        mViewMvc.hideProgressIndication();
         Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onQuestionClicked(Question question) {
-        QuestionDetailsActivity.start(this, question.getId());
+    public void onFetchLastActiveQuestionsFetched(List<QuestionSchema> questions) {
+        mViewMvc.hideProgressIndication();
+        bindQuestions(questions);
     }
 }

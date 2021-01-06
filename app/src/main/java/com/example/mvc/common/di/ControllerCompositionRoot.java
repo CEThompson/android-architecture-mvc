@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 
 import com.example.mvc.networking.StackoverflowApi;
+import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.screens.common.ViewMvcFactory;
 
@@ -12,24 +13,28 @@ public class ControllerCompositionRoot {
     private final CompositionRoot mCompositionRoot;
     private Activity mActivity;
 
-    public ControllerCompositionRoot(CompositionRoot compositionRoot, Activity activity){
+    public ControllerCompositionRoot(CompositionRoot compositionRoot, Activity activity) {
         mCompositionRoot = compositionRoot;
         mActivity = activity;
     }
 
-    public StackoverflowApi getStackOverflowApi(){
+    private StackoverflowApi getStackOverflowApi() {
         return mCompositionRoot.getStackOverflowApi();
     }
 
-    private LayoutInflater getLayoutInflater(){
+    private LayoutInflater getLayoutInflater() {
         return LayoutInflater.from(mActivity);
     }
 
-    public ViewMvcFactory getViewMvcFactory(){
+    public ViewMvcFactory getViewMvcFactory() {
         return new ViewMvcFactory(getLayoutInflater());
     }
 
     public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
         return new FetchQuestionDetailsUseCase(getStackOverflowApi());
+    }
+
+    public FetchLastActiveQuestionsUseCase getFetchLastActiveQuestionsUseCase() {
+        return new FetchLastActiveQuestionsUseCase(getStackOverflowApi());
     }
 }
