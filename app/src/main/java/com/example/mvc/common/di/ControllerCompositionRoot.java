@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 
 import com.example.mvc.networking.StackoverflowApi;
+import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.screens.common.ViewMvcFactory;
 
 public class ControllerCompositionRoot {
@@ -28,4 +29,7 @@ public class ControllerCompositionRoot {
         return new ViewMvcFactory(getLayoutInflater());
     }
 
+    public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
+        return new FetchQuestionDetailsUseCase(getStackOverflowApi());
+    }
 }
