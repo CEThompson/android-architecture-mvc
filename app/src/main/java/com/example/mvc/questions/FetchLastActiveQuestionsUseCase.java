@@ -8,6 +8,7 @@ import com.example.mvc.networking.QuestionSchema;
 import com.example.mvc.networking.QuestionsListResponseSchema;
 import com.example.mvc.networking.StackoverflowApi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,7 +25,7 @@ public class FetchLastActiveQuestionsUseCase extends BaseObservable<FetchLastAct
 
     public interface Listener {
         void onFetchLastActiveQuestionsFailed();
-        void onFetchLastActiveQuestionsFetched(List<QuestionSchema> questions);
+        void onFetchLastActiveQuestionsFetched(List<Question> questions);
     }
 
     public void fetchLastActiveQuestions(){
@@ -54,7 +55,12 @@ public class FetchLastActiveQuestionsUseCase extends BaseObservable<FetchLastAct
         }
     }
 
-    private void notifySuccess(List<QuestionSchema> questions) {
+    private void notifySuccess(List<QuestionSchema> questionSchemas) {
+        List<Question> questions = new ArrayList<>(questionSchemas.size());
+        for (QuestionSchema questionSchema : questionSchemas) {
+            questions.add(new Question(questionSchema.getId(), questionSchema.getTitle()));
+        }
+
         for (Listener listener: getListeners()){
             listener.onFetchLastActiveQuestionsFetched(questions);
         }

@@ -46,6 +46,7 @@ public class QuestionsListViewMvcImpl
         mAdapter.bindQuestions(questions);
     }
 
+
     @Override
     public void showProgressIndication() {
         mProgressBar.setVisibility(View.VISIBLE);

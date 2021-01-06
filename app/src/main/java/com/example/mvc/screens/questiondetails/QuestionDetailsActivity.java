@@ -10,6 +10,7 @@ import com.example.mvc.R;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.BaseActivity;
+import com.example.mvc.screens.common.MessagesDisplayer;
 
 
 // NOTE: This activity represents a controller
@@ -26,12 +27,14 @@ public class QuestionDetailsActivity extends BaseActivity
     }
 
     private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
+    private MessagesDisplayer mMessagesDisplayer;
     private QuestionDetailsViewMvc mViewMvc;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
+        mMessagesDisplayer = getCompositionRoot().getMessagesDisplayer();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(null);
 
         setContentView(mViewMvc.getRootView());
@@ -68,7 +71,7 @@ public class QuestionDetailsActivity extends BaseActivity
     @Override
     public void onQuestionDetailsFetchFailed() {
         mViewMvc.hideProgressIndication();
-        Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show();
+        mMessagesDisplayer.showUseCaseError();
     }
 
 }

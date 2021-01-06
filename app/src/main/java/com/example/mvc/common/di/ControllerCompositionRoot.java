@@ -1,12 +1,16 @@
 package com.example.mvc.common.di;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 
 import com.example.mvc.networking.StackoverflowApi;
 import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
+import com.example.mvc.screens.common.MessagesDisplayer;
+import com.example.mvc.screens.common.ScreensNavigator;
 import com.example.mvc.screens.common.ViewMvcFactory;
+import com.example.mvc.screens.questionslist.QuestionsListController;
 
 public class ControllerCompositionRoot {
 
@@ -37,4 +41,21 @@ public class ControllerCompositionRoot {
     public FetchLastActiveQuestionsUseCase getFetchLastActiveQuestionsUseCase() {
         return new FetchLastActiveQuestionsUseCase(getStackOverflowApi());
     }
+
+    public QuestionsListController getQuestionsListController() {
+        return new QuestionsListController(getFetchLastActiveQuestionsUseCase(), getScreensNavigator(), getMessagesDisplayer());
+    }
+
+    private Context getContext(){
+        return mActivity;
+    }
+
+    public ScreensNavigator getScreensNavigator(){
+        return new ScreensNavigator(getContext());
+    }
+
+    public MessagesDisplayer getMessagesDisplayer(){
+        return new MessagesDisplayer(getContext());
+    }
+
 }
