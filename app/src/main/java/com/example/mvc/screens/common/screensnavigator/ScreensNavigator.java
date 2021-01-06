@@ -1,4 +1,4 @@
-package com.example.mvc.screens.common;
+package com.example.mvc.screens.common.screensnavigator;
 
 import android.content.Context;
 

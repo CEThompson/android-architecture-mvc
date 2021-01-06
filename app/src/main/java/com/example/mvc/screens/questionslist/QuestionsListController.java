@@ -1,12 +1,9 @@
 package com.example.mvc.screens.questionslist;
 
-import android.widget.Toast;
-
-import com.example.mvc.R;
 import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.MessagesDisplayer;
-import com.example.mvc.screens.common.ScreensNavigator;
+import com.example.mvc.screens.common.toasthelper.ToastHelper;
+import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 
 import java.util.List;
 
@@ -16,12 +13,12 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
     private QuestionsListViewMvc mViewMvc;
 
     private final ScreensNavigator mScreensNavigator;
-    private final MessagesDisplayer mMessagesDisplayer;
+    private final ToastHelper mToastHelper;
 
-    public QuestionsListController(FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase, ScreensNavigator mScreensNavigator, MessagesDisplayer mMessagesDisplayer) {
+    public QuestionsListController(FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase, ScreensNavigator mScreensNavigator, ToastHelper mToastHelper) {
         this.mFetchLastActiveQuestionsUseCase = mFetchLastActiveQuestionsUseCase;
         this.mScreensNavigator = mScreensNavigator;
-        this.mMessagesDisplayer = mMessagesDisplayer;
+        this.mToastHelper = mToastHelper;
     }
 
     public void bindView(QuestionsListViewMvc viewMvc){
@@ -54,7 +51,7 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
     @Override
     public void onFetchLastActiveQuestionsFailed() {
         mViewMvc.hideProgressIndication();
-        mMessagesDisplayer.showUseCaseError();
+        mToastHelper.showUseCaseError();
     }
 
 }

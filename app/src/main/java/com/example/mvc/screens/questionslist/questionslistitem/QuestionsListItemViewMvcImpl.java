@@ -1,4 +1,4 @@
-package com.example.mvc.screens.questionslist;
+package com.example.mvc.screens.questionslist.questionslistitem;
 
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.BaseObservableViewMvc;
+import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 
 public class QuestionsListItemViewMvcImpl
         extends BaseObservableViewMvc<QuestionsListItemViewMvc.Listener>

@@ -1,4 +1,4 @@
-package com.example.mvc;
+package com.example.mvc.common;
 
 import android.app.Application;
 

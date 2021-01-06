@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.BaseObservableViewMvc;
+import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 import com.example.mvc.screens.common.ViewMvcFactory;
 
 import java.util.List;

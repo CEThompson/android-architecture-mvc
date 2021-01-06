@@ -1,7 +1,7 @@
 package com.example.mvc.screens.questionslist;
 
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.ObservableViewMvc;
+import com.example.mvc.screens.common.views.ObservableViewMvc;
 
 import java.util.List;
 

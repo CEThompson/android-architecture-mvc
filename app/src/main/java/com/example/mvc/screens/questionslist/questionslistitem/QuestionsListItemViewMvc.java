@@ -1,7 +1,7 @@
-package com.example.mvc.screens.questionslist;
+package com.example.mvc.screens.questionslist.questionslistitem;
 
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.ObservableViewMvc;
+import com.example.mvc.screens.common.views.ObservableViewMvc;
 
 public interface QuestionsListItemViewMvc extends ObservableViewMvc<QuestionsListItemViewMvc.Listener> {
 

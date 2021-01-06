@@ -1,4 +1,4 @@
-package com.example.mvc.networking;
+package com.example.mvc.networking.questions;
 
 import com.google.gson.annotations.SerializedName;
 

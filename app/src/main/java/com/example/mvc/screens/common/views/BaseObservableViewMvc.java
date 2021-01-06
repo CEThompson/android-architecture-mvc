@@ -1,10 +1,7 @@
-package com.example.mvc.screens.common;
-
-import com.example.mvc.screens.questionslist.QuestionsListViewMvc;
+package com.example.mvc.screens.common.views;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public abstract class BaseObservableViewMvc<ListenerType>

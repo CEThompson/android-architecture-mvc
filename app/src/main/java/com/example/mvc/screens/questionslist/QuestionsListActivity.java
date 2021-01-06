@@ -1,17 +1,8 @@
 package com.example.mvc.screens.questionslist;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.example.mvc.R;
-import com.example.mvc.networking.QuestionSchema;
-import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
-import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.BaseActivity;
-import com.example.mvc.screens.questiondetails.QuestionDetailsActivity;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.mvc.screens.common.controllers.BaseActivity;
 
 // NOTE: This class represents the Application Layer
 public class QuestionsListActivity extends BaseActivity

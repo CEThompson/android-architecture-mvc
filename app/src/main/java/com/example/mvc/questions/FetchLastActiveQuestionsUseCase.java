@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.example.mvc.common.BaseObservable;
 import com.example.mvc.common.Constants;
-import com.example.mvc.networking.QuestionSchema;
-import com.example.mvc.networking.QuestionsListResponseSchema;
+import com.example.mvc.networking.questions.QuestionSchema;
+import com.example.mvc.networking.questions.QuestionsListResponseSchema;
 import com.example.mvc.networking.StackoverflowApi;
 
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package com.example.mvc.questions;
 
 import com.example.mvc.common.BaseObservable;
-import com.example.mvc.networking.QuestionDetailsResponseSchema;
-import com.example.mvc.networking.QuestionSchema;
+import com.example.mvc.networking.questions.QuestionDetailsResponseSchema;
+import com.example.mvc.networking.questions.QuestionSchema;
 import com.example.mvc.networking.StackoverflowApi;
 
 import retrofit2.Call;

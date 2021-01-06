@@ -1,6 +1,8 @@
 package com.example.mvc.networking;
 
 import com.example.mvc.common.Constants;
+import com.example.mvc.networking.questions.QuestionDetailsResponseSchema;
+import com.example.mvc.networking.questions.QuestionsListResponseSchema;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
