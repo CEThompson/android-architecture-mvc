@@ -14,7 +14,9 @@ import com.example.mvc.screens.common.toasthelper.ToastHelper;
 // NOTE: This activity represents a controller
 // It orchestrates usecases when appropriate
 public class QuestionDetailsActivity extends BaseActivity
-        implements FetchQuestionDetailsUseCase.Listener {
+        implements
+        FetchQuestionDetailsUseCase.Listener,
+        QuestionDetailsViewMvc.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
@@ -42,6 +44,7 @@ public class QuestionDetailsActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
         mFetchQuestionsDetailsUseCase.registerListener(this);
+        mViewMvc.registerListener(this);
         mViewMvc.showProgressIndication();
         mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
     }
@@ -50,6 +53,7 @@ public class QuestionDetailsActivity extends BaseActivity
     protected void onStop() {
         super.onStop();
         mFetchQuestionsDetailsUseCase.unregisterListener(this);
+        mViewMvc.unregisterListener(this);
     }
 
     private String getQuestionId() {
@@ -72,4 +76,8 @@ public class QuestionDetailsActivity extends BaseActivity
         mToastHelper.showUseCaseError();
     }
 
+    @Override
+    public void onNavigateUpClicked() {
+        onBackPressed();
+    }
 }
