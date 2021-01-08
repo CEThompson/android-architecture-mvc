@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.support.v7.widget.Toolbar;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 import com.example.mvc.screens.common.ViewMvcFactory;
 
@@ -24,6 +26,9 @@ public class QuestionsListViewMvcImpl
     private QuestionsRecyclerAdapter mAdapter;
     private ProgressBar mProgressBar;
 
+    private final ToolbarViewMvc mToolbarViewMvc;
+    private Toolbar mToolbar;
+
     public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent, ViewMvcFactory viewMvcFactory) {
         setRootView(inflater.inflate(R.layout.layout_questions_list, parent, false));
 
@@ -32,6 +37,11 @@ public class QuestionsListViewMvcImpl
         mAdapter = new QuestionsRecyclerAdapter(this, viewMvcFactory);
         mRecyclerQuestions.setAdapter(mAdapter);
         mProgressBar = findViewById(R.id.progress);
+
+        mToolbar = findViewById(R.id.toolbar);
+        mToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(mToolbar);
+        mToolbarViewMvc.setTitle(getContext().getString(R.string.questions_list_screen_title));
+        mToolbar.addView(mToolbarViewMvc.getRootView());
     }
 
     @Override

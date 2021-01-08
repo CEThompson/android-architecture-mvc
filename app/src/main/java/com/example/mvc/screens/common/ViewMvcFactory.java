@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.example.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.example.mvc.screens.questiondetails.QuestionDetailsViewMvc;
 import com.example.mvc.screens.questiondetails.QuestionDetailsViewMvcImpl;
 import com.example.mvc.screens.questionslist.questionslistitem.QuestionsListItemViewMvc;
@@ -30,4 +31,9 @@ public class ViewMvcFactory {
     public QuestionDetailsViewMvc getQuestionDetailsViewMvc(@Nullable ViewGroup parent) {
         return new QuestionDetailsViewMvcImpl(mLayoutInflater, parent);
     }
+
+    public ToolbarViewMvc getToolbarViewMvc(@Nullable ViewGroup parent){
+        return new ToolbarViewMvc(mLayoutInflater, parent);
+    }
+
 }
