@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.navdrawer.BaseNavDrawerViewMvc;
+import com.example.mvc.screens.common.navdrawer.DrawerItems;
 import com.example.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 import com.example.mvc.screens.common.ViewMvcFactory;
@@ -19,7 +21,7 @@ import java.util.List;
 
 // NOTE: This class represents the UI Layer
 public class QuestionsListViewMvcImpl
-        extends BaseObservableViewMvc<QuestionsListViewMvc.Listener>
+        extends BaseNavDrawerViewMvc<QuestionsListViewMvc.Listener>
         implements QuestionsRecyclerAdapter.Listener, QuestionsListViewMvc {
 
     private RecyclerView mRecyclerQuestions;
@@ -30,6 +32,7 @@ public class QuestionsListViewMvcImpl
     private Toolbar mToolbar;
 
     public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent, ViewMvcFactory viewMvcFactory) {
+        super(inflater, parent);
         setRootView(inflater.inflate(R.layout.layout_questions_list, parent, false));
 
         mRecyclerQuestions = findViewById(R.id.recycler_questions);
@@ -65,5 +68,15 @@ public class QuestionsListViewMvcImpl
     @Override
     public void hideProgressIndication() {
         mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void onDrawerItemClicked(DrawerItems item) {
+        for (Listener listener: getListeners()){
+            switch (item){
+                case QUESTIONS_LIST:
+                    listener.onQuestionListClicked();
+            }
+        }
     }
 }

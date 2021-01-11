@@ -43,6 +43,12 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
     }
 
     @Override
+    public void onQuestionListClicked() {
+        // this is the questions list screen - no-op
+        // empty by design
+    }
+
+    @Override
     public void onFetchLastActiveQuestionsFetched(List<Question> questions) {
         mViewMvc.hideProgressIndication();
         mViewMvc.bindQuestions(questions);

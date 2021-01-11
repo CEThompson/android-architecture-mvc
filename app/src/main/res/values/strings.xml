@@ -3,4 +3,5 @@
     <string name="error_network_call_failed">network call failed</string>
     <string name="questions_list_screen_title">MVC</string>
     <string name="questions_details">Question Details</string>
+    <string name="drawer_menu_item_question">Questions List</string>
 </resources>
