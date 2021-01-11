@@ -54,9 +54,7 @@ public class QuestionsListViewMvcImpl
         mToolbarViewMvc.enableMenuButtonAndListen(new ToolbarViewMvc.MenuClickListener() {
             @Override
             public void onMenuClicked() {
-                for (QuestionsListViewMvc.Listener listener: getListeners()){
-                    openDrawer();
-                }
+                openDrawer();
             }
         });
     }
