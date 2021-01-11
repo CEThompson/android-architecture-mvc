@@ -15,10 +15,17 @@ public class ToolbarViewMvc extends BaseViewMvc {
         void onNavigateUpClicked();
     }
 
+    public interface MenuClickListener {
+        void onMenuClicked();
+    }
+
     private final ImageButton mBtnBack;
     private final TextView mTxtTitle;
+    private final ImageButton mBtnMenu;
 
     private NavigateUpClickListener mNavigateUpClickListener;
+
+    private MenuClickListener mMenuClickListener;
 
     public ToolbarViewMvc(LayoutInflater inflater, ViewGroup parent){
         setRootView(inflater.inflate(R.layout.layout_toolbar, parent, false));
@@ -30,12 +37,31 @@ public class ToolbarViewMvc extends BaseViewMvc {
                 mNavigateUpClickListener.onNavigateUpClicked();
             }
         });
+
+        mBtnMenu = findViewById(R.id.hamburger);
+        mBtnMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMenuClickListener.onMenuClicked();
+            }
+        });
     }
 
     public void setTitle(String title) { mTxtTitle.setText(title); }
 
     public void enableUpButtonAndListen(NavigateUpClickListener navigateUpClickListener){
+        if (mNavigateUpClickListener != null){
+            throw new RuntimeException(("Hamburger and up should'nt be shown together"));
+        }
         mNavigateUpClickListener = navigateUpClickListener;
         mBtnBack.setVisibility(View.VISIBLE);
+    }
+
+    public void enableMenuButtonAndListen(MenuClickListener listener){
+        if (mNavigateUpClickListener != null){
+            throw new RuntimeException(("Hamburger and up should'nt be shown together"));
+        }
+        mMenuClickListener = listener;
+        mBtnMenu.setVisibility(View.VISIBLE);
     }
 }

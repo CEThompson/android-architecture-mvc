@@ -16,6 +16,7 @@ import com.example.mvc.screens.common.navdrawer.DrawerItems;
 import com.example.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 import com.example.mvc.screens.common.ViewMvcFactory;
+import com.example.mvc.screens.questiondetails.QuestionDetailsViewMvc;
 
 import java.util.List;
 
@@ -43,9 +44,23 @@ public class QuestionsListViewMvcImpl
 
         mToolbar = findViewById(R.id.toolbar);
         mToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(mToolbar);
+        initToolbar();
+
+    }
+
+    private void initToolbar() {
         mToolbarViewMvc.setTitle(getContext().getString(R.string.questions_list_screen_title));
         mToolbar.addView(mToolbarViewMvc.getRootView());
+        mToolbarViewMvc.enableMenuButtonAndListen(new ToolbarViewMvc.MenuClickListener() {
+            @Override
+            public void onMenuClicked() {
+                for (QuestionsListViewMvc.Listener listener: getListeners()){
+                    openDrawer();
+                }
+            }
+        });
     }
+
 
     @Override
     public void onQuestionClicked(Question question) {

@@ -6,9 +6,7 @@ import com.example.mvc.screens.common.controllers.BaseActivity;
 
 // NOTE: This class represents the Application Layer
 public class QuestionsListActivity extends BaseActivity
-         {
-
-
+{
 
     private QuestionsListController mQuestionsListController;
 
