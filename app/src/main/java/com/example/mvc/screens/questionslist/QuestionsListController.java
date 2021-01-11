@@ -60,4 +60,10 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
         mToastHelper.showUseCaseError();
     }
 
+    public boolean onBackpressed() {
+        if (mViewMvc.isDrawerOpen()) {
+            mViewMvc.closeDrawer();
+            return true;
+        } else return false;
+    }
 }

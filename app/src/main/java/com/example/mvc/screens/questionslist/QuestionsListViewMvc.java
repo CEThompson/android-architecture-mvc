@@ -1,6 +1,7 @@
 package com.example.mvc.screens.questionslist;
 
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.navdrawer.NavDrawerViewMvc;
 import com.example.mvc.screens.common.views.ObservableViewMvc;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 
 // This interface documents the functionality of the MVC view
 // Interfaces for MVC views are a very good investment into long term maintainability
-public interface QuestionsListViewMvc extends ObservableViewMvc<QuestionsListViewMvc.Listener> {
+public interface QuestionsListViewMvc extends ObservableViewMvc<QuestionsListViewMvc.Listener>, NavDrawerViewMvc {
 
     void showProgressIndication();
     void hideProgressIndication();

@@ -14,7 +14,9 @@ import android.widget.FrameLayout;
 import com.example.mvc.R;
 import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 
-public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE> extends BaseObservableViewMvc<LISTENER_TYPE> {
+public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE>
+        extends BaseObservableViewMvc<LISTENER_TYPE>
+        implements NavDrawerViewMvc {
 
     private final DrawerLayout mDrawerLayout;
     private final FrameLayout mFrameLayout;
@@ -39,8 +41,19 @@ public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE> extends BaseObservable
 
     }
 
-    protected void openDrawer() {
+    @Override
+    public void openDrawer() {
         mDrawerLayout.openDrawer(Gravity.START);
+    }
+
+    @Override
+    public void closeDrawer() {
+        mDrawerLayout.closeDrawers();
+    }
+
+    @Override
+    public boolean isDrawerOpen() {
+        return mDrawerLayout.isDrawerOpen(Gravity.START);
     }
 
     protected abstract void onDrawerItemClicked(DrawerItems item);
