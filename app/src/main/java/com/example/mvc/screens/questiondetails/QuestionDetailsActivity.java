@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.controllers.BaseActivity;
+import com.example.mvc.screens.common.navdrawer.DrawerItems;
+import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
 
 
@@ -28,6 +30,7 @@ public class QuestionDetailsActivity extends BaseActivity
 
     private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
     private ToastHelper mToastHelper;
+    private ScreensNavigator mScreensNavigator;
     private QuestionDetailsViewMvc mViewMvc;
 
     @Override
@@ -36,6 +39,7 @@ public class QuestionDetailsActivity extends BaseActivity
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
         mToastHelper = getCompositionRoot().getMessagesDisplayer();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(null);
+        mScreensNavigator = getCompositionRoot().getScreensNavigator();
 
         setContentView(mViewMvc.getRootView());
     }
@@ -79,5 +83,19 @@ public class QuestionDetailsActivity extends BaseActivity
     @Override
     public void onNavigateUpClicked() {
         onBackPressed();
+    }
+
+    @Override
+    public void onDrawerItemClicked(DrawerItems item) {
+        switch (item){
+            case QUESTIONS_LIST:
+                mScreensNavigator.toQuestionsListClearTop();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mViewMvc.isDrawerOpen()) mViewMvc.closeDrawer();
+        else super.onBackPressed();
     }
 }

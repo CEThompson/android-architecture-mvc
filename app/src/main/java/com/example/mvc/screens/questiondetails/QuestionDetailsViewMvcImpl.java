@@ -11,11 +11,13 @@ import android.widget.TextView;
 import com.example.mvc.R;
 import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.ViewMvcFactory;
+import com.example.mvc.screens.common.navdrawer.BaseNavDrawerViewMvc;
+import com.example.mvc.screens.common.navdrawer.DrawerItems;
 import com.example.mvc.screens.common.toolbar.ToolbarViewMvc;
 import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 
 
-public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDetailsViewMvc.Listener> implements QuestionDetailsViewMvc {
+public class QuestionDetailsViewMvcImpl extends BaseNavDrawerViewMvc<QuestionDetailsViewMvc.Listener> implements QuestionDetailsViewMvc {
 
     private final ToolbarViewMvc mToolbarViewMvc;
     private final Toolbar mToolbar;
@@ -25,6 +27,7 @@ public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDe
     private final ProgressBar mProgressBar;
 
     public QuestionDetailsViewMvcImpl(LayoutInflater inflater, ViewGroup container, ViewMvcFactory viewMvcFactory) {
+        super(inflater, container);
         setRootView(inflater.inflate(R.layout.layout_question_details, container, false));
 
         mTxtQuestionTitle = findViewById(R.id.txt_question_title);
@@ -75,4 +78,12 @@ public class QuestionDetailsViewMvcImpl extends BaseObservableViewMvc<QuestionDe
     public void hideProgressIndication() {
         mProgressBar.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void onDrawerItemClicked(DrawerItems item) {
+        for (Listener listener : getListeners()){
+            listener.onDrawerItemClicked(item);
+        }
+    }
+
 }
