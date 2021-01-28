@@ -4,21 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
+import com.example.mvc.R;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.questions.QuestionDetails;
+import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.controllers.BaseActivity;
 import com.example.mvc.screens.common.navdrawer.DrawerItems;
 import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
+import com.example.mvc.screens.questionslist.QuestionsListFragment;
+
+import static com.example.mvc.screens.questiondetails.QuestionDetailsFragment.newInstance;
 
 
 // NOTE: This activity represents a controller
 // It orchestrates usecases when appropriate
-public class QuestionDetailsActivity extends BaseActivity
-        implements
-        FetchQuestionDetailsUseCase.Listener,
-        QuestionDetailsViewMvc.Listener {
+public class QuestionDetailsActivity extends BaseActivity {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
@@ -28,74 +32,33 @@ public class QuestionDetailsActivity extends BaseActivity
         context.startActivity(intent);
     }
 
-    private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
-    private ToastHelper mToastHelper;
-    private ScreensNavigator mScreensNavigator;
-    private QuestionDetailsViewMvc mViewMvc;
+    private BackpressListener mListener;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
-        mToastHelper = getCompositionRoot().getMessagesDisplayer();
-        mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(null);
-        mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        setContentView(R.layout.layout_content_frame);
 
-        setContentView(mViewMvc.getRootView());
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mFetchQuestionsDetailsUseCase.registerListener(this);
-        mViewMvc.registerListener(this);
-        mViewMvc.showProgressIndication();
-        mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mFetchQuestionsDetailsUseCase.unregisterListener(this);
-        mViewMvc.unregisterListener(this);
-    }
-
-    private String getQuestionId() {
-        return getIntent().getStringExtra(EXTRA_QUESTION_ID);
-    }
-
-    @Override
-    public void onQuestionDetailsFetched(QuestionDetails questionDetails) {
-        bindQuestionDetails(questionDetails);
-    }
-
-    private void bindQuestionDetails(QuestionDetails details) {
-        mViewMvc.hideProgressIndication();
-        mViewMvc.bindQuestion(details);
-    }
-
-    @Override
-    public void onQuestionDetailsFetchFailed() {
-        mViewMvc.hideProgressIndication();
-        mToastHelper.showUseCaseError();
-    }
-
-    @Override
-    public void onNavigateUpClicked() {
-        onBackPressed();
-    }
-
-    @Override
-    public void onDrawerItemClicked(DrawerItems item) {
-        switch (item){
-            case QUESTIONS_LIST:
-                mScreensNavigator.toQuestionsListClearTop();
+        QuestionDetailsFragment fragment;
+        if (savedInstanceState == null){
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            fragment = QuestionDetailsFragment.newInstance(getQuestionId());
+            ft.add(R.id.frame_content, fragment).commit();
+        } else {
+            fragment = (QuestionDetailsFragment) getSupportFragmentManager().findFragmentById(R.id.frame_content);
         }
+
+        mListener = fragment;
+
     }
 
     @Override
     public void onBackPressed() {
-        if (mViewMvc.isDrawerOpen()) mViewMvc.closeDrawer();
-        else super.onBackPressed();
+        Log.d("QuestionDetailsFragment", "on backpressed in activity");
+        if (!mListener.onBackPressed()) super.onBackPressed();
+    }
+
+    private String getQuestionId() {
+        return getIntent().getStringExtra(EXTRA_QUESTION_ID);
     }
 }
