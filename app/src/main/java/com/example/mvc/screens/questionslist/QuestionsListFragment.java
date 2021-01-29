@@ -22,7 +22,7 @@ public class QuestionsListFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // TODO: determine why passing container causes this to fail while vasily's code works
-        QuestionsListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(null);
+        QuestionsListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(container);
         mQuestionsListController = getCompositionRoot().getQuestionsListController();
         mQuestionsListController.bindView(viewMvc);
         return viewMvc.getRootView();

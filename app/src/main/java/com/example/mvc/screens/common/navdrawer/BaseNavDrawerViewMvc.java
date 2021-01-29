@@ -23,7 +23,7 @@ public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE>
     private final NavigationView mNavigationView;
 
     public BaseNavDrawerViewMvc(LayoutInflater inflater, @Nullable ViewGroup parent){
-        super.setRootView(inflater.inflate(R.layout.layout_drawer, parent));
+        super.setRootView(inflater.inflate(R.layout.layout_drawer, parent, false));
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mFrameLayout = findViewById(R.id.frame_content);
         mNavigationView = findViewById(R.id.nav_view);
