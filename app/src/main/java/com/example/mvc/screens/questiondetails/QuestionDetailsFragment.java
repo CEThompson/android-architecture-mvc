@@ -1,7 +1,5 @@
 package com.example.mvc.screens.questiondetails;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.questions.QuestionDetails;
+import com.example.mvc.screens.common.controllers.BackpressDispatcher;
 import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.controllers.BaseFragment;
 import com.example.mvc.screens.common.navdrawer.DrawerItems;
@@ -25,13 +24,15 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
-    public static QuestionDetailsFragment newInstance(String questionId){
+    public static QuestionDetailsFragment newInstance(String questionId) {
         Bundle args = new Bundle();
         args.putString(EXTRA_QUESTION_ID, questionId);
         QuestionDetailsFragment fragment = new QuestionDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
+    private BackpressDispatcher mDispatcher;
 
     private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
     private ToastHelper mToastHelper;
@@ -42,10 +43,11 @@ public class QuestionDetailsFragment extends BaseFragment implements
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
-        mToastHelper = getCompositionRoot().getMessagesDisplayer();
+        mToastHelper = getCompositionRoot().getToastHelper();
         // TODO: determine why passing container causes this to fail while vasily's code works
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mDispatcher = getCompositionRoot().getBackpressDispatcher();
         return mViewMvc.getRootView();
     }
 
@@ -57,6 +59,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mViewMvc.registerListener(this);
         mViewMvc.showProgressIndication();
         mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+        mDispatcher.registerListener(this);
     }
 
     @Override
@@ -64,6 +67,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStop();
         mFetchQuestionsDetailsUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
+        mDispatcher.unregisterListener(this);
     }
 
     private String getQuestionId() {
@@ -90,9 +94,9 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     @Override
     public void onDrawerItemClicked(DrawerItems item) {
-        switch (item){
+        switch (item) {
             case QUESTIONS_LIST:
-                mScreensNavigator.toQuestionsListClearTop();
+                mScreensNavigator.toQuestionsList();
         }
     }
 

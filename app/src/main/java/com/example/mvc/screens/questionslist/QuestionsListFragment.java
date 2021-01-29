@@ -1,7 +1,5 @@
 package com.example.mvc.screens.questionslist;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,19 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.controllers.BaseFragment;
+import com.example.mvc.screens.questiondetails.QuestionDetailsFragment;
 
-public class QuestionsListFragment extends BaseFragment implements BackpressListener {
+public class QuestionsListFragment extends BaseFragment {
+
+    public static QuestionsListFragment newInstance() {
+        return new QuestionsListFragment();
+    }
 
     private QuestionsListController mQuestionsListController;
-
-    /*public static void startClearTop(Context context) {
-        Intent intent = new Intent(context, QuestionsListActivity.class);
-        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-    }*/
-
 
     @Nullable
     @Override
@@ -43,11 +38,6 @@ public class QuestionsListFragment extends BaseFragment implements BackpressList
     public void onStop() {
         super.onStop();
         mQuestionsListController.onStop();
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return mQuestionsListController.onBackpressed();
     }
 
 }

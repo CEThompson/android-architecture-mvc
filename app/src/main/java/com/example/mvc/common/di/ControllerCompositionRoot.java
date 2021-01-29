@@ -1,25 +1,36 @@
 package com.example.mvc.common.di;
 
-import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
 import com.example.mvc.networking.StackoverflowApi;
 import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
-import com.example.mvc.screens.common.toasthelper.ToastHelper;
-import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.ViewMvcFactory;
+import com.example.mvc.screens.common.controllers.BackpressDispatcher;
+import com.example.mvc.screens.common.controllers.FragmentFrameWrapper;
+import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
+import com.example.mvc.screens.common.toasthelper.ToastHelper;
 import com.example.mvc.screens.questionslist.QuestionsListController;
 
 public class ControllerCompositionRoot {
 
     private final CompositionRoot mCompositionRoot;
-    private Activity mActivity;
+    private FragmentActivity mActivity;
 
-    public ControllerCompositionRoot(CompositionRoot compositionRoot, Activity activity) {
+    public ControllerCompositionRoot(CompositionRoot compositionRoot, FragmentActivity activity) {
         mCompositionRoot = compositionRoot;
         mActivity = activity;
+    }
+
+    private FragmentActivity getActivity(){
+        return mActivity;
+    }
+
+    private FragmentManager getFragmentManager(){
+        return getActivity().getSupportFragmentManager();
     }
 
     private StackoverflowApi getStackOverflowApi() {
@@ -43,19 +54,26 @@ public class ControllerCompositionRoot {
     }
 
     public QuestionsListController getQuestionsListController() {
-        return new QuestionsListController(getFetchLastActiveQuestionsUseCase(), getScreensNavigator(), getMessagesDisplayer());
+        return new QuestionsListController(getFetchLastActiveQuestionsUseCase(), getScreensNavigator(), getToastHelper(), getBackpressDispatcher());
     }
 
-    private Context getContext(){
+    private Context getContext() {
         return mActivity;
     }
 
-    public ScreensNavigator getScreensNavigator(){
-        return new ScreensNavigator(getContext());
+    public ScreensNavigator getScreensNavigator() {
+        return new ScreensNavigator(getFragmentManager(), getFragmentFrameWrapper());
     }
 
-    public ToastHelper getMessagesDisplayer(){
+    private FragmentFrameWrapper getFragmentFrameWrapper(){
+        return (FragmentFrameWrapper) getActivity();
+    }
+
+    public ToastHelper getToastHelper() {
         return new ToastHelper(getContext());
     }
 
+    public BackpressDispatcher getBackpressDispatcher() {
+        return (BackpressDispatcher) getActivity();
+    }
 }

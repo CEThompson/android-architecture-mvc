@@ -2,12 +2,14 @@ package com.example.mvc.screens.questionslist;
 
 import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.Question;
+import com.example.mvc.screens.common.controllers.BackpressDispatcher;
+import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
 import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 
 import java.util.List;
 
-public class QuestionsListController implements QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener {
+public class QuestionsListController implements QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener, BackpressListener {
 
     private final FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase;
     private QuestionsListViewMvc mViewMvc;
@@ -15,10 +17,13 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
     private final ScreensNavigator mScreensNavigator;
     private final ToastHelper mToastHelper;
 
-    public QuestionsListController(FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase, ScreensNavigator mScreensNavigator, ToastHelper mToastHelper) {
-        this.mFetchLastActiveQuestionsUseCase = mFetchLastActiveQuestionsUseCase;
-        this.mScreensNavigator = mScreensNavigator;
-        this.mToastHelper = mToastHelper;
+    private final BackpressDispatcher mDispatcher;
+
+    public QuestionsListController(FetchLastActiveQuestionsUseCase fetchLastActiveQuestionsUseCase, ScreensNavigator screensNavigator, ToastHelper toastHelper, BackpressDispatcher backpressDispatcher) {
+        this.mFetchLastActiveQuestionsUseCase = fetchLastActiveQuestionsUseCase;
+        this.mScreensNavigator = screensNavigator;
+        this.mToastHelper = toastHelper;
+        this.mDispatcher = backpressDispatcher;
     }
 
     public void bindView(QuestionsListViewMvc viewMvc){
@@ -30,16 +35,18 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
         mViewMvc.registerListener(this);
         mViewMvc.showProgressIndication();
         mFetchLastActiveQuestionsUseCase.fetchLastActiveQuestions();
+        mDispatcher.registerListener(this);
     }
 
     public void onStop(){
         mViewMvc.unregisterListener(this);
         mFetchLastActiveQuestionsUseCase.unregisterListener(this);
+        mDispatcher.unregisterListener(this);
     }
 
     @Override
     public void onQuestionClicked(Question question) {
-        mScreensNavigator.toDialogDetails(question.getId());
+        mScreensNavigator.toQuestionDetails(question.getId());
     }
 
     @Override
@@ -60,7 +67,15 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
         mToastHelper.showUseCaseError();
     }
 
-    public boolean onBackpressed() {
+    /*public boolean onBackpressed() {
+        if (mViewMvc.isDrawerOpen()) {
+            mViewMvc.closeDrawer();
+            return true;
+        } else return false;
+    }*/
+
+    @Override
+    public boolean onBackPressed() {
         if (mViewMvc.isDrawerOpen()) {
             mViewMvc.closeDrawer();
             return true;
