@@ -26,7 +26,8 @@ public class QuestionsListFragment extends BaseFragment implements BackpressList
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        QuestionsListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(null);
+        // TODO: determine why passing container causes this to fail while vasily's code works
+        QuestionsListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(container);
         mQuestionsListController = getCompositionRoot().getQuestionsListController();
         mQuestionsListController.bindView(viewMvc);
         return viewMvc.getRootView();

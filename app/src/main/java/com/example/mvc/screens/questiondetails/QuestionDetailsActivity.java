@@ -49,7 +49,6 @@ public class QuestionDetailsActivity extends BaseActivity {
         }
 
         mListener = fragment;
-
     }
 
     @Override

@@ -43,7 +43,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
         mToastHelper = getCompositionRoot().getMessagesDisplayer();
-        mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(null);
+        // TODO: determine why passing container causes this to fail while vasily's code works
+        mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
         return mViewMvc.getRootView();
     }
