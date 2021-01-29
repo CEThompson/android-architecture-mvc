@@ -12,6 +12,7 @@ import com.example.mvc.screens.common.ViewMvcFactory;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
 import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
 import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
+import com.example.mvc.screens.common.navdrawer.NavDrawerHelper;
 import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
 import com.example.mvc.screens.questionslist.QuestionsListController;
@@ -43,7 +44,11 @@ public class ControllerCompositionRoot {
     }
 
     public ViewMvcFactory getViewMvcFactory() {
-        return new ViewMvcFactory(getLayoutInflater());
+        return new ViewMvcFactory(getLayoutInflater(), getNavDrawerHelper());
+    }
+
+    private NavDrawerHelper getNavDrawerHelper() {
+        return (NavDrawerHelper) getActivity();
     }
 
     public FetchQuestionDetailsUseCase getFetchQuestionDetailsUseCase() {
@@ -55,7 +60,10 @@ public class ControllerCompositionRoot {
     }
 
     public QuestionsListController getQuestionsListController() {
-        return new QuestionsListController(getFetchLastActiveQuestionsUseCase(), getScreensNavigator(), getToastHelper(), getBackpressDispatcher());
+        return new QuestionsListController(
+                getFetchLastActiveQuestionsUseCase(),
+                getScreensNavigator(),
+                getToastHelper());
     }
 
     private Context getContext() {

@@ -11,14 +11,13 @@ import java.util.List;
 
 // This interface documents the functionality of the MVC view
 // Interfaces for MVC views are a very good investment into long term maintainability
-public interface QuestionsListViewMvc extends ObservableViewMvc<QuestionsListViewMvc.Listener>, NavDrawerViewMvc {
+public interface QuestionsListViewMvc extends ObservableViewMvc<QuestionsListViewMvc.Listener> {
 
     void showProgressIndication();
     void hideProgressIndication();
 
     public interface Listener {
         void onQuestionClicked(Question question);
-        void onQuestionListClicked();
     }
 
     void bindQuestions(List<Question> questions);

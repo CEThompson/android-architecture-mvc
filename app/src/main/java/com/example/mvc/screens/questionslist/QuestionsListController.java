@@ -9,7 +9,10 @@ import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 
 import java.util.List;
 
-public class QuestionsListController implements QuestionsListViewMvcImpl.Listener, FetchLastActiveQuestionsUseCase.Listener, BackpressListener {
+public class QuestionsListController
+        implements
+        QuestionsListViewMvcImpl.Listener,
+        FetchLastActiveQuestionsUseCase.Listener {
 
     private final FetchLastActiveQuestionsUseCase mFetchLastActiveQuestionsUseCase;
     private QuestionsListViewMvc mViewMvc;
@@ -17,13 +20,11 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
     private final ScreensNavigator mScreensNavigator;
     private final ToastHelper mToastHelper;
 
-    private final BackpressDispatcher mDispatcher;
 
-    public QuestionsListController(FetchLastActiveQuestionsUseCase fetchLastActiveQuestionsUseCase, ScreensNavigator screensNavigator, ToastHelper toastHelper, BackpressDispatcher backpressDispatcher) {
+    public QuestionsListController(FetchLastActiveQuestionsUseCase fetchLastActiveQuestionsUseCase, ScreensNavigator screensNavigator, ToastHelper toastHelper) {
         this.mFetchLastActiveQuestionsUseCase = fetchLastActiveQuestionsUseCase;
         this.mScreensNavigator = screensNavigator;
         this.mToastHelper = toastHelper;
-        this.mDispatcher = backpressDispatcher;
     }
 
     public void bindView(QuestionsListViewMvc viewMvc){
@@ -35,13 +36,11 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
         mViewMvc.registerListener(this);
         mViewMvc.showProgressIndication();
         mFetchLastActiveQuestionsUseCase.fetchLastActiveQuestions();
-        mDispatcher.registerListener(this);
     }
 
     public void onStop(){
         mViewMvc.unregisterListener(this);
         mFetchLastActiveQuestionsUseCase.unregisterListener(this);
-        mDispatcher.unregisterListener(this);
     }
 
     @Override
@@ -49,11 +48,6 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
         mScreensNavigator.toQuestionDetails(question.getId());
     }
 
-    @Override
-    public void onQuestionListClicked() {
-        // this is the questions list screen - no-op
-        // empty by design
-    }
 
     @Override
     public void onFetchLastActiveQuestionsFetched(List<Question> questions) {
@@ -74,11 +68,4 @@ public class QuestionsListController implements QuestionsListViewMvcImpl.Listene
         } else return false;
     }*/
 
-    @Override
-    public boolean onBackPressed() {
-        if (mViewMvc.isDrawerOpen()) {
-            mViewMvc.closeDrawer();
-            return true;
-        } else return false;
-    }
 }

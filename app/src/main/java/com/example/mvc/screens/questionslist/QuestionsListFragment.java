@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mvc.screens.common.controllers.BaseFragment;
-import com.example.mvc.screens.questiondetails.QuestionDetailsFragment;
 
 public class QuestionsListFragment extends BaseFragment {
 

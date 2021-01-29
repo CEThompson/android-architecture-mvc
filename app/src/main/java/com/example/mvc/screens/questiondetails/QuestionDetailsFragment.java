@@ -19,7 +19,6 @@ import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
 
 public class QuestionDetailsFragment extends BaseFragment implements
-        BackpressListener,
         FetchQuestionDetailsUseCase.Listener,
         QuestionDetailsViewMvc.Listener {
 
@@ -32,8 +31,6 @@ public class QuestionDetailsFragment extends BaseFragment implements
         fragment.setArguments(args);
         return fragment;
     }
-
-    private BackpressDispatcher mDispatcher;
 
     private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
     private ToastHelper mToastHelper;
@@ -49,7 +46,6 @@ public class QuestionDetailsFragment extends BaseFragment implements
         // TODO: determine why passing container causes this to fail while vasily's code works
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
-        mDispatcher = getCompositionRoot().getBackpressDispatcher();
         return mViewMvc.getRootView();
     }
 
@@ -61,7 +57,6 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mViewMvc.registerListener(this);
         mViewMvc.showProgressIndication();
         mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
-        mDispatcher.registerListener(this);
     }
 
     @Override
@@ -69,7 +64,6 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStop();
         mFetchQuestionsDetailsUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
-        mDispatcher.unregisterListener(this);
     }
 
     private String getQuestionId() {
@@ -93,25 +87,5 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mScreensNavigator.navigateUp();
     }
 
-    @Override
-    public void onDrawerItemClicked(DrawerItems item) {
-        switch (item) {
-            case QUESTIONS_LIST:
-                mScreensNavigator.toQuestionsList();
-        }
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        Log.d("QuestionDetailsFragment", "on backpressed");
-        if (mViewMvc.isDrawerOpen()) {
-            mViewMvc.closeDrawer();
-            Log.d("QuestionDetailsFragment", "returning true");
-            return true;
-        } else {
-            Log.d("QuestionDetailsFragment", "returning false");
-            return false;
-        }
-    }
 
 }

@@ -11,29 +11,32 @@ import android.support.v7.widget.Toolbar;
 
 import com.example.mvc.R;
 import com.example.mvc.questions.Question;
-import com.example.mvc.screens.common.navdrawer.BaseNavDrawerViewMvc;
-import com.example.mvc.screens.common.navdrawer.DrawerItems;
+import com.example.mvc.screens.common.navdrawer.NavDrawerHelper;
 import com.example.mvc.screens.common.toolbar.ToolbarViewMvc;
-import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 import com.example.mvc.screens.common.ViewMvcFactory;
-import com.example.mvc.screens.questiondetails.QuestionDetailsViewMvc;
+import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 
 import java.util.List;
 
 // NOTE: This class represents the UI Layer
 public class QuestionsListViewMvcImpl
-        extends BaseNavDrawerViewMvc<QuestionsListViewMvc.Listener>
+        extends BaseObservableViewMvc<QuestionsListViewMvc.Listener>
         implements QuestionsRecyclerAdapter.Listener, QuestionsListViewMvc {
 
-    private RecyclerView mRecyclerQuestions;
-    private QuestionsRecyclerAdapter mAdapter;
-    private ProgressBar mProgressBar;
+    private final RecyclerView mRecyclerQuestions;
+    private final QuestionsRecyclerAdapter mAdapter;
+    private final ProgressBar mProgressBar;
 
     private final ToolbarViewMvc mToolbarViewMvc;
-    private Toolbar mToolbar;
+    private final Toolbar mToolbar;
 
-    public QuestionsListViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent, ViewMvcFactory viewMvcFactory) {
-        super(inflater, parent);
+    private final NavDrawerHelper mNavDrawerHelper;
+
+    public QuestionsListViewMvcImpl(LayoutInflater inflater,
+                                    @Nullable ViewGroup parent,
+                                    ViewMvcFactory viewMvcFactory,
+                                    NavDrawerHelper navDrawerHelper) {
+        this.mNavDrawerHelper = navDrawerHelper;
         setRootView(inflater.inflate(R.layout.layout_questions_list, parent, false));
 
         mRecyclerQuestions = findViewById(R.id.recycler_questions);
@@ -54,7 +57,7 @@ public class QuestionsListViewMvcImpl
         mToolbarViewMvc.enableMenuButtonAndListen(new ToolbarViewMvc.MenuClickListener() {
             @Override
             public void onMenuClicked() {
-                openDrawer();
+                mNavDrawerHelper.openDrawer();
             }
         });
     }
@@ -83,13 +86,4 @@ public class QuestionsListViewMvcImpl
         mProgressBar.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    protected void onDrawerItemClicked(DrawerItems item) {
-        for (Listener listener: getListeners()){
-            switch (item){
-                case QUESTIONS_LIST:
-                    listener.onQuestionListClicked();
-            }
-        }
-    }
 }

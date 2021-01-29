@@ -14,16 +14,16 @@ import android.widget.FrameLayout;
 import com.example.mvc.R;
 import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 
-public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE>
-        extends BaseObservableViewMvc<LISTENER_TYPE>
+public class NavDrawerViewMvcImpl
+        extends BaseObservableViewMvc<NavDrawerViewMvc.Listener>
         implements NavDrawerViewMvc {
 
     private final DrawerLayout mDrawerLayout;
     private final FrameLayout mFrameLayout;
     private final NavigationView mNavigationView;
 
-    public BaseNavDrawerViewMvc(LayoutInflater inflater, @Nullable ViewGroup parent){
-        super.setRootView(inflater.inflate(R.layout.layout_drawer, parent, false));
+    public NavDrawerViewMvcImpl(LayoutInflater inflater, @Nullable ViewGroup parent){
+        setRootView(inflater.inflate(R.layout.layout_drawer, parent, false));
         mDrawerLayout = findViewById(R.id.drawer_layout);
         mFrameLayout = findViewById(R.id.frame_content);
         mNavigationView = findViewById(R.id.nav_view);
@@ -33,12 +33,19 @@ public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE>
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 mDrawerLayout.closeDrawers();
                 if (item.getItemId() == R.id.drawer_menu_questions_list){
-                    onDrawerItemClicked(DrawerItems.QUESTIONS_LIST);
+                    for (Listener listener: getListeners()){
+                        listener.onQuestionsListClicked();
+                    }
                 }
                 return false;
             }
         });
 
+    }
+
+    @Override
+    public FrameLayout getFragmentFrame() {
+        return mFrameLayout;
     }
 
     @Override
@@ -56,10 +63,5 @@ public abstract class BaseNavDrawerViewMvc<LISTENER_TYPE>
         return mDrawerLayout.isDrawerOpen(Gravity.START);
     }
 
-    protected abstract void onDrawerItemClicked(DrawerItems item);
 
-    @Override
-    protected void setRootView(View view) {
-        mFrameLayout.addView(view);
-    }
 }
