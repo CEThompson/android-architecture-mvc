@@ -10,7 +10,8 @@ import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.screens.common.ViewMvcFactory;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
-import com.example.mvc.screens.common.controllers.FragmentFrameWrapper;
+import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
+import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
 import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
 import com.example.mvc.screens.questionslist.QuestionsListController;
@@ -62,7 +63,11 @@ public class ControllerCompositionRoot {
     }
 
     public ScreensNavigator getScreensNavigator() {
-        return new ScreensNavigator(getFragmentManager(), getFragmentFrameWrapper());
+        return new ScreensNavigator(getFragmentFrameHelper());
+    }
+
+    private FragmentFrameHelper getFragmentFrameHelper() {
+        return new FragmentFrameHelper(getActivity(), getFragmentFrameWrapper(), getFragmentManager());
     }
 
     private FragmentFrameWrapper getFragmentFrameWrapper(){

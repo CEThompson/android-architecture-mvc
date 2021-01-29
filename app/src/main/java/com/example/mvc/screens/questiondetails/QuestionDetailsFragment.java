@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.mvc.R;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
@@ -44,8 +45,9 @@ public class QuestionDetailsFragment extends BaseFragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
         mToastHelper = getCompositionRoot().getToastHelper();
+        
         // TODO: determine why passing container causes this to fail while vasily's code works
-        mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
+        mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(null);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
         mDispatcher = getCompositionRoot().getBackpressDispatcher();
         return mViewMvc.getRootView();
@@ -88,8 +90,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     @Override
     public void onNavigateUpClicked() {
-        Log.d("QuestionDetailsFragment", "on nav up");
-        this.onBackPressed();
+        mScreensNavigator.navigateUp();
     }
 
     @Override
