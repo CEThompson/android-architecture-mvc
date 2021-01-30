@@ -13,6 +13,6 @@ public class ToastHelper {
     }
 
     public void showUseCaseError() {
-        Toast.makeText(mContext, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.error_network_call_failed_message, Toast.LENGTH_SHORT).show();
     }
 }

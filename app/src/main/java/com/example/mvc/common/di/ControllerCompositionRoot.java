@@ -10,6 +10,7 @@ import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.screens.common.ViewMvcFactory;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
+import com.example.mvc.screens.common.dialogs.DialogsManager;
 import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
 import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
 import com.example.mvc.screens.common.navdrawer.NavDrawerHelper;
@@ -88,5 +89,9 @@ public class ControllerCompositionRoot {
 
     public BackpressDispatcher getBackpressDispatcher() {
         return (BackpressDispatcher) getActivity();
+    }
+
+    public DialogsManager getDialogsManager() {
+        return new DialogsManager(getContext(), getFragmentManager());
     }
 }

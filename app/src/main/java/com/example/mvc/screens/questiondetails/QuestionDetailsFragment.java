@@ -14,6 +14,8 @@ import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
 import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.controllers.BaseFragment;
+import com.example.mvc.screens.common.dialogs.DialogsManager;
+import com.example.mvc.screens.common.dialogs.infodialog.InfoDialog;
 import com.example.mvc.screens.common.navdrawer.DrawerItems;
 import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
@@ -33,7 +35,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     }
 
     private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
-    private ToastHelper mToastHelper;
+    private DialogsManager mDialogsManager;
     private ScreensNavigator mScreensNavigator;
     private QuestionDetailsViewMvc mViewMvc;
 
@@ -41,8 +43,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
-        mToastHelper = getCompositionRoot().getToastHelper();
-
+        mDialogsManager = getCompositionRoot().getDialogsManager();
         // TODO: determine why passing container causes this to fail while vasily's code works
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
@@ -79,7 +80,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     @Override
     public void onQuestionDetailsFetchFailed() {
         mViewMvc.hideProgressIndication();
-        mToastHelper.showUseCaseError();
+        mDialogsManager.showUseCaseErrorDialog(null);
     }
 
     @Override

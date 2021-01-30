@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MVC</string>
-    <string name="error_network_call_failed">network call failed</string>
+    <string name="error_network_call_failed_button_caption">Ok</string>
+    <string name="error_network_call_failed_title">Oops</string>
+    <string name="error_network_call_failed_message">network call failed</string>
     <string name="questions_list_screen_title">MVC</string>
     <string name="questions_details">Question Details</string>
     <string name="drawer_menu_item_question">Questions List</string>
