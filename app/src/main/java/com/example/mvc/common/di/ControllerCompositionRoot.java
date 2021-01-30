@@ -10,6 +10,7 @@ import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
 import com.example.mvc.screens.common.ViewMvcFactory;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
+import com.example.mvc.screens.common.dialogs.DialogsEventBus;
 import com.example.mvc.screens.common.dialogs.DialogsManager;
 import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameHelper;
 import com.example.mvc.screens.common.fragmentframehelper.FragmentFrameWrapper;
@@ -93,5 +94,9 @@ public class ControllerCompositionRoot {
 
     public DialogsManager getDialogsManager() {
         return new DialogsManager(getContext(), getFragmentManager());
+    }
+
+    public DialogsEventBus getDialogsEventBus() {
+        return mCompositionRoot.getDialogsEventBus();
     }
 }

@@ -14,15 +14,17 @@ import com.example.mvc.questions.QuestionDetails;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
 import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.controllers.BaseFragment;
+import com.example.mvc.screens.common.dialogs.DialogsEventBus;
 import com.example.mvc.screens.common.dialogs.DialogsManager;
 import com.example.mvc.screens.common.dialogs.infodialog.InfoDialog;
+import com.example.mvc.screens.common.dialogs.promptdialog.PromptDialogEvent;
 import com.example.mvc.screens.common.navdrawer.DrawerItems;
 import com.example.mvc.screens.common.screensnavigator.ScreensNavigator;
 import com.example.mvc.screens.common.toasthelper.ToastHelper;
 
 public class QuestionDetailsFragment extends BaseFragment implements
         FetchQuestionDetailsUseCase.Listener,
-        QuestionDetailsViewMvc.Listener {
+        QuestionDetailsViewMvc.Listener, DialogsEventBus.Listener {
 
     public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
 
@@ -39,14 +41,16 @@ public class QuestionDetailsFragment extends BaseFragment implements
     private ScreensNavigator mScreensNavigator;
     private QuestionDetailsViewMvc mViewMvc;
 
+    private DialogsEventBus mDialogsEventBus;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFetchQuestionsDetailsUseCase = getCompositionRoot().getFetchQuestionDetailsUseCase();
         mDialogsManager = getCompositionRoot().getDialogsManager();
-        // TODO: determine why passing container causes this to fail while vasily's code works
         mViewMvc = getCompositionRoot().getViewMvcFactory().getQuestionDetailsViewMvc(container);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
+        mDialogsEventBus = getCompositionRoot().getDialogsEventBus();
         return mViewMvc.getRootView();
     }
 
@@ -58,6 +62,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mViewMvc.registerListener(this);
         mViewMvc.showProgressIndication();
         mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+        mDialogsEventBus.registerListener(this);
     }
 
     @Override
@@ -65,6 +70,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStop();
         mFetchQuestionsDetailsUseCase.unregisterListener(this);
         mViewMvc.unregisterListener(this);
+        mDialogsEventBus.unregisterListener(this);
     }
 
     private String getQuestionId() {
@@ -89,4 +95,15 @@ public class QuestionDetailsFragment extends BaseFragment implements
     }
 
 
+    @Override
+    public void onDialogEvent(Object event) {
+        if (event instanceof PromptDialogEvent){
+            switch (((PromptDialogEvent) event).getClickedButton()) {
+                case POSITIVE:
+                    mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+                case NEGATIVE:
+                    break;
+            }
+        }
+    }
 }

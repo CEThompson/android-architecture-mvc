@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.example.mvc.R;
 import com.example.mvc.screens.common.dialogs.infodialog.InfoDialog;
+import com.example.mvc.screens.common.dialogs.promptdialog.PromptDialog;
 
 public class DialogsManager {
 
@@ -20,10 +21,11 @@ public class DialogsManager {
     }
 
     public void showUseCaseErrorDialog(@Nullable String tag) {
-        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+        DialogFragment dialogFragment = PromptDialog.newPromptDialog(
                 getString(R.string.error_network_call_failed_title),
                 getString(R.string.error_network_call_failed_message),
-                getString(R.string.error_network_call_failed_button_caption));
+                getString(R.string.error_network_call_failed_positive_button_caption),
+                getString(R.string.error_network_call_failed_negative_button_caption));
         dialogFragment.show(mFragmentmanager, tag);
     }
 

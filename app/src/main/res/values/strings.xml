@@ -6,4 +6,6 @@
     <string name="questions_list_screen_title">MVC</string>
     <string name="questions_details">Question Details</string>
     <string name="drawer_menu_item_question">Questions List</string>
+    <string name="error_network_call_failed_positive_button_caption">retry</string>
+    <string name="error_network_call_failed_negative_button_caption">close</string>
 </resources>
