@@ -65,9 +65,9 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mDialogsEventBus.registerListener(this);
 
         mViewMvc.showProgressIndication();
-        
+
         // Only fetch question details if dialog not shown
-        if (!mDialogsManager.getShownDialogTag().equals(DIALOG_ID_NETWORK_ERROR)) {
+        if (!DIALOG_ID_NETWORK_ERROR.equals(mDialogsManager.getShownDialogTag())) {
             mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
         }
     }
