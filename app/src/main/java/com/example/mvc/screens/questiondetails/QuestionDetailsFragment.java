@@ -30,6 +30,8 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     private static final String DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR";
 
+    private static final String SAVED_STATE = "SAVED_STATE";
+
     public static QuestionDetailsFragment newInstance(String questionId) {
         Bundle args = new Bundle();
         args.putString(EXTRA_QUESTION_ID, questionId);
@@ -38,12 +40,24 @@ public class QuestionDetailsFragment extends BaseFragment implements
         return fragment;
     }
 
+    private enum ScreenState {
+        IDLE, DETAILS_SHOWN, NETWORK_ERROR
+    }
+
     private FetchQuestionDetailsUseCase mFetchQuestionsDetailsUseCase;
     private DialogsManager mDialogsManager;
     private ScreensNavigator mScreensNavigator;
     private QuestionDetailsViewMvc mViewMvc;
-
     private DialogsEventBus mDialogsEventBus;
+    private ScreenState mScreenState = ScreenState.IDLE;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null){
+            mScreenState = (ScreenState) savedInstanceState.getSerializable(SAVED_STATE);
+        }
+    }
 
     @Nullable
     @Override
@@ -67,6 +81,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mViewMvc.showProgressIndication();
 
         // Only fetch question details if dialog not shown
+        if (mScreenState != ScreenState.NETWORK_ERROR)
         if (!DIALOG_ID_NETWORK_ERROR.equals(mDialogsManager.getShownDialogTag())) {
             mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
         }
@@ -86,12 +101,14 @@ public class QuestionDetailsFragment extends BaseFragment implements
 
     @Override
     public void onQuestionDetailsFetched(QuestionDetails questionDetails) {
+        mScreenState = ScreenState.DETAILS_SHOWN;
         mViewMvc.hideProgressIndication();
         mViewMvc.bindQuestion(questionDetails);
     }
 
     @Override
     public void onQuestionDetailsFetchFailed() {
+        mScreenState = ScreenState.NETWORK_ERROR;
         mViewMvc.hideProgressIndication();
         mDialogsManager.showUseCaseErrorDialog(DIALOG_ID_NETWORK_ERROR);
     }
@@ -111,6 +128,14 @@ public class QuestionDetailsFragment extends BaseFragment implements
                 case NEGATIVE:
                     break;
             }
+            mScreenState = ScreenState.IDLE;
         }
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_STATE, mScreenState);
+    }
+
 }
