@@ -8,4 +8,9 @@
     <string name="drawer_menu_item_question">Questions List</string>
     <string name="error_network_call_failed_positive_button_caption">retry</string>
     <string name="error_network_call_failed_negative_button_caption">close</string>
+    <string name="permission_dialog_title">Permission Dialog</string>
+    <string name="permission_dialog_button_caption">OK</string>
+    <string name="permission_dialog_granted">Permission Granted</string>
+    <string name="permission_dialog_denied">Permission denied and can ask more.</string>
+    <string name="permission_dialog_denied_cant_ask">Permission denied and cannot ask more.</string>
 </resources>

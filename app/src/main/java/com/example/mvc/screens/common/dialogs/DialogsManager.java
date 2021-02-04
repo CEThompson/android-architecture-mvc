@@ -43,4 +43,28 @@ public class DialogsManager {
         }
         return null;
     }
+
+    public void showPermissionGrantedDialog(@Nullable String tag) {
+        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+                getString(R.string.permission_dialog_title),
+                getString(R.string.permission_dialog_granted),
+                getString(R.string.permission_dialog_button_caption));
+        dialogFragment.show(mFragmentmanager, tag);
+    }
+
+    public void showPermissionDeniedAndCantAskForMoreDialog(String tag) {
+        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+                getString(R.string.permission_dialog_title),
+                getString(R.string.permission_dialog_denied_cant_ask),
+                getString(R.string.permission_dialog_button_caption));
+        dialogFragment.show(mFragmentmanager, tag);
+    }
+
+    public void showPermissionDeniedAndCanAskForMoreDialog(String tag) {
+        DialogFragment dialogFragment = InfoDialog.newInfoDialog(
+                getString(R.string.permission_dialog_title),
+                getString(R.string.permission_dialog_denied),
+                getString(R.string.permission_dialog_button_caption));
+        dialogFragment.show(mFragmentmanager, tag);
+    }
 }
