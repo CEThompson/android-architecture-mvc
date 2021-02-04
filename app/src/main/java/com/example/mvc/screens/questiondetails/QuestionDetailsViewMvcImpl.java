@@ -18,7 +18,8 @@ import com.example.mvc.screens.common.views.BaseObservableViewMvc;
 
 
 public class QuestionDetailsViewMvcImpl extends
-        BaseObservableViewMvc<QuestionDetailsViewMvc.Listener> implements QuestionDetailsViewMvc {
+        BaseObservableViewMvc<QuestionDetailsViewMvc.Listener>
+        implements QuestionDetailsViewMvc {
 
     private final ToolbarViewMvc mToolbarViewMvc;
     private final Toolbar mToolbar;
@@ -50,6 +51,15 @@ public class QuestionDetailsViewMvcImpl extends
             public void onNavigateUpClicked() {
                 for (Listener listener : getListeners()) {
                     listener.onNavigateUpClicked();
+                }
+            }
+        });
+
+        mToolbarViewMvc.enableLocationRequestButtonAndListen(new ToolbarViewMvc.LocationRequestListener() {
+            @Override
+            public void onLocationRequestClicked() {
+                for (Listener listener: getListeners()){
+                    listener.onLocationRequestClicked();
                 }
             }
         });

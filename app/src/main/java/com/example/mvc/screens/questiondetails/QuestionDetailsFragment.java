@@ -118,6 +118,11 @@ public class QuestionDetailsFragment extends BaseFragment implements
         mScreensNavigator.navigateUp();
     }
 
+    @Override
+    public void onLocationRequestClicked() {
+        // TODO handle permission
+    }
+
 
     @Override
     public void onDialogEvent(Object event) {
