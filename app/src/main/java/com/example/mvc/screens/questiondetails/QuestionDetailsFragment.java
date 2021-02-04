@@ -26,7 +26,9 @@ public class QuestionDetailsFragment extends BaseFragment implements
         FetchQuestionDetailsUseCase.Listener,
         QuestionDetailsViewMvc.Listener, DialogsEventBus.Listener {
 
-    public static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
+    private static final String EXTRA_QUESTION_ID = "EXTRA_QUESTION_ID";
+
+    private static final String DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR";
 
     public static QuestionDetailsFragment newInstance(String questionId) {
         Bundle args = new Bundle();
@@ -60,9 +62,14 @@ public class QuestionDetailsFragment extends BaseFragment implements
         super.onStart();
         mFetchQuestionsDetailsUseCase.registerListener(this);
         mViewMvc.registerListener(this);
-        mViewMvc.showProgressIndication();
-        mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
         mDialogsEventBus.registerListener(this);
+
+        mViewMvc.showProgressIndication();
+        
+        // Only fetch question details if dialog not shown
+        if (!mDialogsManager.getShownDialogTag().equals(DIALOG_ID_NETWORK_ERROR)) {
+            mFetchQuestionsDetailsUseCase.fetchQuestionDetailsAndNotify(getQuestionId());
+        }
     }
 
     @Override
@@ -86,7 +93,7 @@ public class QuestionDetailsFragment extends BaseFragment implements
     @Override
     public void onQuestionDetailsFetchFailed() {
         mViewMvc.hideProgressIndication();
-        mDialogsManager.showUseCaseErrorDialog(null);
+        mDialogsManager.showUseCaseErrorDialog(DIALOG_ID_NETWORK_ERROR);
     }
 
     @Override
