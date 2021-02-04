@@ -15,6 +15,8 @@ public class QuestionsListFragment extends BaseFragment {
         return new QuestionsListFragment();
     }
 
+    private final String SAVED_STATE_CONTROLLER = "STATE_KEY";
+
     private QuestionsListController mQuestionsListController;
 
     @Nullable
@@ -23,8 +25,20 @@ public class QuestionsListFragment extends BaseFragment {
         // TODO: determine why passing container causes this to fail while vasily's code works
         QuestionsListViewMvc viewMvc = getCompositionRoot().getViewMvcFactory().getQuestionsListViewMvc(container);
         mQuestionsListController = getCompositionRoot().getQuestionsListController();
+
+        if (savedInstanceState != null){
+            restoreControllerState(savedInstanceState);
+        }
+
         mQuestionsListController.bindView(viewMvc);
         return viewMvc.getRootView();
+    }
+
+    private void restoreControllerState(Bundle savedInstanceState) {
+        mQuestionsListController.restoreSavedState(
+                (QuestionsListController.SavedState)
+                        savedInstanceState.getSerializable(SAVED_STATE_CONTROLLER)
+        );
     }
 
     @Override
@@ -37,6 +51,12 @@ public class QuestionsListFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         mQuestionsListController.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_STATE_CONTROLLER, mQuestionsListController.getSavedState());
     }
 
 }
