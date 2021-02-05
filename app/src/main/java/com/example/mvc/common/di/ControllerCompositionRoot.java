@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 
+import com.example.mvc.common.permissions.PermissionsHelper;
 import com.example.mvc.networking.StackoverflowApi;
 import com.example.mvc.questions.FetchLastActiveQuestionsUseCase;
 import com.example.mvc.questions.FetchQuestionDetailsUseCase;
@@ -21,16 +22,14 @@ import com.example.mvc.screens.questionslist.QuestionsListController;
 
 public class ControllerCompositionRoot {
 
-    private final CompositionRoot mCompositionRoot;
-    private FragmentActivity mActivity;
+    private final ActivityCompositionRoot mActivityCompositionRoot;
 
-    public ControllerCompositionRoot(CompositionRoot compositionRoot, FragmentActivity activity) {
-        mCompositionRoot = compositionRoot;
-        mActivity = activity;
+    public ControllerCompositionRoot(ActivityCompositionRoot activityCompositionRoot) {
+        this.mActivityCompositionRoot = activityCompositionRoot;
     }
 
     private FragmentActivity getActivity(){
-        return mActivity;
+        return mActivityCompositionRoot.getActivity();
     }
 
     private FragmentManager getFragmentManager(){
@@ -38,11 +37,11 @@ public class ControllerCompositionRoot {
     }
 
     private StackoverflowApi getStackOverflowApi() {
-        return mCompositionRoot.getStackOverflowApi();
+        return mActivityCompositionRoot.getStackOverflowApi();
     }
 
     private LayoutInflater getLayoutInflater() {
-        return LayoutInflater.from(mActivity);
+        return LayoutInflater.from(mActivityCompositionRoot.getActivity());
     }
 
     public ViewMvcFactory getViewMvcFactory() {
@@ -70,7 +69,7 @@ public class ControllerCompositionRoot {
     }
 
     private Context getContext() {
-        return mActivity;
+        return getActivity();
     }
 
     public ScreensNavigator getScreensNavigator() {
@@ -98,6 +97,11 @@ public class ControllerCompositionRoot {
     }
 
     public DialogsEventBus getDialogsEventBus() {
-        return mCompositionRoot.getDialogsEventBus();
+        return mActivityCompositionRoot.getDialogsEventBus();
     }
+
+    public PermissionsHelper getPermissionsHelper() {
+        return mActivityCompositionRoot.getPermissionsHelper();
+    }
+
 }

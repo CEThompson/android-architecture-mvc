@@ -3,9 +3,11 @@ package com.example.mvc.screens.common.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.FrameLayout;
 
 import com.example.mvc.R;
+import com.example.mvc.common.permissions.PermissionsHelper;
 import com.example.mvc.screens.common.controllers.BackpressDispatcher;
 import com.example.mvc.screens.common.controllers.BackpressListener;
 import com.example.mvc.screens.common.controllers.BaseActivity;
@@ -29,6 +31,8 @@ public class MainActivity extends BaseActivity implements
     private ScreensNavigator mScreensNavigator;
     private NavDrawerViewMvc mViewMvc;
 
+    private PermissionsHelper mPermissionsHelper;
+
     /*@Override
     public void registerListener(BackpressListener listener) {
         mBackPressListeners.add(listener);
@@ -44,6 +48,7 @@ public class MainActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         mScreensNavigator = getCompositionRoot().getScreensNavigator();
         mViewMvc = getCompositionRoot().getViewMvcFactory().getNavDrawerViewMvc(null);
+        mPermissionsHelper = getCompositionRoot().getPermissionsHelper();
         setContentView(mViewMvc.getRootView());
         if (savedInstanceState == null) mScreensNavigator.toQuestionsList();
     }
@@ -72,6 +77,13 @@ public class MainActivity extends BaseActivity implements
         if (!isBackPressConsumedByAnyListener) super.onBackPressed();*/
         if (mViewMvc.isDrawerOpen()) mViewMvc.closeDrawer();
         else super.onBackPressed();
+    }
+
+    // Simply delegate to activity to handle both activity and fragment permissions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mPermissionsHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
